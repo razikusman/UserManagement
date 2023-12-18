@@ -36,18 +36,17 @@ namespace UserManagement.Services
                     Status = employeeRequest.Status,
                     Username = employeeRequest.Username,
                     TempPassword = randompassword,
+
+                    // add the salries to the saved employee
                     Salaries = CreateSalaries(employeeRequest.Salaries)
             };
 
 
-                // create an entry in employees table
-                //var result = await _context.SaveChangesAsync();
-
-                // add the salries to the saved employee
-                //savedemp.Salaries = CreateSalaries( employeeRequest.Salaries, savedemp.EmpId);
-                //_context.employees.Entry(savedemp).State = EntityState.Modified;
+                
+                //create data
                 _context.employees.Add(employee);
 
+                //create entry in db
                 await _context.SaveChangesAsync();
                 //saved employee
                 var savedemp = await _context.employees.FirstOrDefaultAsync(x => x.EmpId == employeeRequest.EmpId);
@@ -80,9 +79,10 @@ namespace UserManagement.Services
 
             for (int i = 0; i < 4; i++) 
             { 
-                var letter = letters[random.Next(letters.Length)];
-                var numb = random.Next(100);
+                var letter = letters[random.Next(letters.Length)]; // lettervalue for temp passwrd
+                var numb = random.Next(100); // Number value for temp passwrd
 
+                //Append Both number nad letter to create temp password
                 stringBuilder.Append(letter);
                 stringBuilder.Append(numb);
             }
@@ -94,10 +94,13 @@ namespace UserManagement.Services
         {
             var SalariesList = new List<Salaries>();
             var salary = new Salaries();
+
             foreach (var item in salaries)
             {
                 salary.SalaryAmount = item.Salary;
                 salary.Month = item.Month;
+
+                // add each salry to List
                 SalariesList.Add(salary);
             }
 
@@ -113,8 +116,8 @@ namespace UserManagement.Services
         {
             try
             {
-                var reslist = await _context.employees
-                                            .Include(e => e.Salaries)
+                var reslist = await _context.employees // get from employee table
+                                            .Include(e => e.Salaries) // get the salaries from salry table
                                             .ToListAsync();
                 return reslist;
             }
@@ -128,6 +131,7 @@ namespace UserManagement.Services
         {
             try
             {
+                //get the matching employee
                 var res = await _context.employees.FirstOrDefaultAsync(list => list.EmpId == EmployeeId);
                 return res;
             }
