@@ -21,5 +21,12 @@ namespace UserManagement.Controllers
             var res = await _loginService.Login(loginRequest);
             return Ok(res);
         }
+
+        [HttpPut("id")]
+        public async Task<JsonResult> ChangePasswordAsync(string id, string oldPas, string newPas)
+        {
+            var res = await _loginService.ChangePasswordAsync(id, oldPas, newPas);
+            return Json(res);
+        }
     }
 }

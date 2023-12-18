@@ -41,5 +41,35 @@ namespace UserManagement.Services
             }
         }
 
+        public async Task<Employees> ChangePasswordAsync(string id, string oldPas, string newPas)
+        {
+            try
+            {
+                var emp = await _context.employees.FirstOrDefaultAsync(e => e.TempPassword == oldPas && e.EmpId == id);
+
+                if (emp != null)
+                {
+                    emp.Password = newPas;
+                    _context.employees.Entry(emp).State = EntityState.Modified;
+                    var res = await _context.SaveChangesAsync();
+
+                    if (res > 0)
+                    {
+                        return emp;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else { throw new Exception(); }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }

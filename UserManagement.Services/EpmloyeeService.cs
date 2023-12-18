@@ -6,6 +6,7 @@ using UserManagement.Model.Response;
 using UserManagement.Services.Interfaces;
 using UserManagement.Models.Model.Request;
 using UserManagement.Model;
+using System.Text;
 
 namespace UserManagement.Services
 {
@@ -17,10 +18,11 @@ namespace UserManagement.Services
         {
             _context = userDBContext;
         }
-        public async Task<APIResponseModel<EmployeeRequest>> CreateEmployeeAsync(EmployeeRequest employeeRequest)
+        public async Task<APIResponseModel<Employees>> CreateEmployeeAsync(EmployeeRequest employeeRequest)
         {
             try
             {
+                string randompassword = CreatePassword();
                 var employee = new Employees()
                 {
                     Address = employeeRequest.Address,
@@ -33,7 +35,7 @@ namespace UserManagement.Services
                     Salary = employeeRequest.Salary,
                     Status = employeeRequest.Status,
                     Username = employeeRequest.Username,
-                    TempPassword = employeeRequest.TempPassword,
+                    TempPassword = randompassword,
                     Salaries = CreateSalaries(employeeRequest.Salaries)
             };
 
@@ -41,20 +43,19 @@ namespace UserManagement.Services
                 // create an entry in employees table
                 //var result = await _context.SaveChangesAsync();
 
-                //saved employee
-                var savedemp = await _context.employees.FirstOrDefaultAsync(x => x.EmpId == employeeRequest.EmpId);
-
                 // add the salries to the saved employee
                 //savedemp.Salaries = CreateSalaries( employeeRequest.Salaries, savedemp.EmpId);
                 //_context.employees.Entry(savedemp).State = EntityState.Modified;
                 _context.employees.Add(employee);
 
                 await _context.SaveChangesAsync();
+                //saved employee
+                var savedemp = await _context.employees.FirstOrDefaultAsync(x => x.EmpId == employeeRequest.EmpId);
 
                 //create response
-                var response = new APIResponseModel<EmployeeRequest>() 
+                var response = new APIResponseModel<Employees>() 
                 { 
-                    Data = employeeRequest,
+                    Data = savedemp,
                     IsError = false,
                     ResponseCode = (int)HttpStatusCode.OK,
                 };
@@ -67,6 +68,26 @@ namespace UserManagement.Services
 
                 throw;
             }
+        }
+
+        private string CreatePassword()
+        {
+            Random random = new Random();
+            
+            const string letters = "MYRANDOMPASFENCE";
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (int i = 0; i < 4; i++) 
+            { 
+                var letter = letters[random.Next(letters.Length)];
+                var numb = random.Next(100);
+
+                stringBuilder.Append(letter);
+                stringBuilder.Append(numb);
+            }
+
+            return stringBuilder.ToString();
         }
 
         private List<Salaries> CreateSalaries(List<SalariesRequest> salaries)
