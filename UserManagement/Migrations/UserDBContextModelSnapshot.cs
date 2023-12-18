@@ -75,7 +75,7 @@ namespace UserManagement.Migrations
 
                     b.HasKey("EmployeesId");
 
-                    b.ToTable("employees");
+                    b.ToTable("employees", (string)null);
                 });
 
             modelBuilder.Entity("UserManagement.Models.Model.Salaries", b =>
@@ -101,7 +101,7 @@ namespace UserManagement.Migrations
 
                     b.HasIndex("EmployeesId");
 
-                    b.ToTable("salaries");
+                    b.ToTable("salaries", (string)null);
                 });
 
             modelBuilder.Entity("UserManagement.Models.Model.Salaries", b =>

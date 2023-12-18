@@ -20,6 +20,7 @@ builder.Services.AddDbContext<UserDBContext>(options =>
 });
 
 builder.Services.AddScoped<IEpmloyeeService, EpmloyeeService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
 
 builder.Services.AddCors(opt =>
 {

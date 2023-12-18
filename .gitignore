@@ -1,0 +1,12 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/UserManagement.Services/bin/Debug
+/UserManagement.Services/obj/Debug
+/UserManagement/.vs/UserManagement
+/UserManagement/bin/Debug
+/UserManagement/obj/Debug
+/UserManagement/.vs/UserManagement/FileContentIndex
+/UserManagement.Models/obj/Debug
+/UserManagement.Models/bin/Debug
