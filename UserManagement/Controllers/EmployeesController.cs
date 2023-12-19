@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UserManagement.Auth;
 using UserManagement.Model.Response;
 using UserManagement.Models.Model.Request;
 using UserManagement.Services.Interfaces;
 
 namespace UserManagement.Controllers
 {
+    [CustomAuthorize]
     [ApiController]
     [Route("api/[controller]")]
     public class EmployeesController : Controller

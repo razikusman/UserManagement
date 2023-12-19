@@ -6,16 +6,20 @@ using UserManagement.Model.Response;
 using UserManagement.Services.Interfaces;
 using UserManagement.Models.Model.Request;
 using UserManagement.Model;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace UserManagement.Services
 {
     public class LoginService : ILoginService
     {
         private readonly UserDBContext _context;
+        private readonly IMemoryCache _memoryCache;
 
-        public LoginService(UserDBContext userDBContext) 
+        public LoginService(UserDBContext userDBContext,IMemoryCache memoryCache) 
         {
             _context = userDBContext;
+            _memoryCache = memoryCache;
         }
         public async Task<Boolean> Login(LoginRequest loginRequest)
         {
@@ -27,6 +31,8 @@ namespace UserManagement.Services
                 // if emp exist and status true/ active
                 if (savedemp != null && Boolean.Parse(savedemp.Status))
                 {
+                    var token = await createToken(savedemp);
+                    _memoryCache.Set(savedemp.EmpId, token);
                     return true;
                 }
                 else
@@ -40,6 +46,12 @@ namespace UserManagement.Services
 
                 throw;
             }
+        }
+
+        private async Task<String> createToken(Employees savedemp)
+        {
+            var employeestring = savedemp.EmpId + savedemp.Username + savedemp.Password;
+            return employeestring;
         }
 
         public async Task<Employees> ChangePasswordAsync(string id, string oldPas, string newPas)

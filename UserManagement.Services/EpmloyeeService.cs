@@ -13,10 +13,13 @@ namespace UserManagement.Services
     public class EpmloyeeService : IEpmloyeeService
     {
         private readonly UserDBContext _context;
+        private readonly IEmailService _emailService;
 
-        public EpmloyeeService(UserDBContext userDBContext) 
+        public EpmloyeeService(UserDBContext userDBContext,
+                               IEmailService emailService) 
         {
             _context = userDBContext;
+            _emailService = emailService;
         }
         public async Task<APIResponseModel<Employees>> CreateEmployeeAsync(EmployeeRequest employeeRequest)
         {
@@ -39,7 +42,7 @@ namespace UserManagement.Services
 
                     // add the salries to the saved employee
                     Salaries = CreateSalaries(employeeRequest.Salaries)
-            };
+                };
 
 
                 
@@ -48,8 +51,11 @@ namespace UserManagement.Services
 
                 //create entry in db
                 await _context.SaveChangesAsync();
+
                 //saved employee
                 var savedemp = await _context.employees.FirstOrDefaultAsync(x => x.EmpId == employeeRequest.EmpId);
+
+                await _emailService.SendEmailAsync(savedemp.EmpId, randompassword, savedemp.Email);
 
                 //create response
                 var response = new APIResponseModel<Employees>() 

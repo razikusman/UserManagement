@@ -2,8 +2,10 @@ using UserManagement.Models.Model;
 using Microsoft.EntityFrameworkCore;
 using UserManagement.Services.Interfaces;
 using UserManagement.Services;
+using UserManagement.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
+AppSettings appSettings;
 
 // Add services to the container.
 
@@ -12,6 +14,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+appSettings = new AppSettings();
+builder.Configuration.Bind(nameof(AppSettings), appSettings);
+
+builder.Services.AddMemoryCache();
+builder.Services.AddSingleton(appSettings);
 
 builder.Services.AddDbContext<UserDBContext>(options =>
 {
@@ -21,6 +28,7 @@ builder.Services.AddDbContext<UserDBContext>(options =>
 
 builder.Services.AddScoped<IEpmloyeeService, EpmloyeeService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddCors(opt =>
 {
@@ -41,6 +49,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<TokenMiddleware>();
 
 app.UseHttpsRedirection();
 
