@@ -15,7 +15,11 @@ namespace UserManagement.Auth
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var user = context.HttpContext.Items[nameof(Employees)] as Employees;
-            return;
+
+            if (user == null)
+            {
+                context.Result = new UnauthorizedResult();
+            }
         }
     }
     

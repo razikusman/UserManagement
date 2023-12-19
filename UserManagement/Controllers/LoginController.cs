@@ -22,6 +22,13 @@ namespace UserManagement.Controllers
             return Ok(res);
         }
 
+        [HttpPost("id")]
+        public async Task<IActionResult> LogOutAsync(string id)
+        {
+            var res = await _loginService.LogOut(id);
+            return Ok(res);
+        }
+
         [HttpPut("id")]
         public async Task<JsonResult> ChangePasswordAsync(string id, string oldPas, string newPas)
         {

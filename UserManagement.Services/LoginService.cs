@@ -48,6 +48,27 @@ namespace UserManagement.Services
             }
         }
 
+        public async Task<Boolean> LogOut(string id)
+        {
+            try
+            {
+                if(String.IsNullOrEmpty(_memoryCache.Get(id) as string))
+                {
+                    return false;
+                }
+                else
+                {
+                    _memoryCache.Remove(id);
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         private async Task<String> createToken(Employees savedemp)
         {
             var employeestring = savedemp.EmpId + savedemp.Username + savedemp.Password;

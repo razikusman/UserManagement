@@ -27,11 +27,7 @@ namespace UserManagement.Auth
                 Employees? employee = null;
                 
                 // Store user in Memory Cache
-                if (String.IsNullOrWhiteSpace(memoryCache.Get(employeeCode) as string))
-                {
-                    throw new UnauthorizedAccessException();
-                }
-                else
+                if (!String.IsNullOrWhiteSpace(memoryCache.Get(employeeCode) as string))
                 {
                     var user = await epmloyeeService.GetEmployeeAsync(employeeCode);
                     context.Items[nameof(Employees)] = user;

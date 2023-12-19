@@ -8,5 +8,6 @@ namespace UserManagement.Services.Interfaces
     {
         Task<Employees> ChangePasswordAsync(string id, string oldPas, string newPas);
         Task<Boolean> Login(LoginRequest loginRequest);
+        Task<Boolean> LogOut(string id);
     }
 }
