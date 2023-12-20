@@ -11,5 +11,11 @@ export class Employees{
     Address :  string | undefined
     Status :  string | undefined//-active/inactive
     TempPassword :  string | undefined
-    Salaries : [] = []
+    Salaries : Salaries[] = []
+}
+
+
+export class Salaries{
+    Month :  string | undefined
+    Salary :  string | undefined
 }

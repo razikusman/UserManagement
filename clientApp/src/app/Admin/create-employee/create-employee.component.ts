@@ -1,7 +1,8 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Employees } from 'src/app/Models/employees';
+import { Employees, Salaries } from 'src/app/Models/employees';
 import { EmployeeService } from 'src/app/Services/employee.service';
 
 @Component({
@@ -27,7 +28,7 @@ export class CreateEmployeeComponent implements OnInit {
   createBookingForm(){
     this.employeeForm = this.formbuilder.group({
       // Fullname : ['', Validators.required],
-      // Email :  ['', Validators.required],
+      Email :  ['', Validators.required],
       Salary :  ['', Validators.required],
       Joindate :  ['', Validators.required],
       // Password :  ['', Validators.required],
@@ -42,8 +43,26 @@ export class CreateEmployeeComponent implements OnInit {
 
   onSubmit() {
     if (this.employeeForm.valid) {
-      const employee = this.employeeForm.value as Employees;
-console.log(employee)
+      const emp = this.employeeForm.value as Employees;
+      var employee = new Employees();
+      employee.Salary = emp.Salary;
+      employee.Joindate = emp.Joindate;
+      employee.Username = emp.Username;
+      employee.Email = emp.Email;
+      employee.Status = 'true';
+      //create salry of current month start
+      let sal = new Salaries();
+      let date = new Date();
+
+      let datePipe = new DatePipe('en-US');
+      sal.Month = datePipe.transform(date, 'MMM')?.toString();
+      sal.Salary = employee.Salary;
+      //create salry of current month End
+
+      let salArray = [];
+      salArray.push(sal);
+      employee.Salaries = salArray; // add the salry to salries array
+      console.log(employee)
       this.empService.SaveEmployee(employee).subscribe(res =>{
         if (res != null) {
           console.log("save success" + res);

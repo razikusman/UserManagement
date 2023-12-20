@@ -19,7 +19,7 @@ namespace UserManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> CreateEmployeeAAsync(EmployeeRequest employeeRequest)
+        public async Task<JsonResult> CreateEmployeeAAsync([FromBody] EmployeeRequest employeeRequest)
         {
             var res = await _epmloyeeService.CreateEmployeeAsync(employeeRequest);
             return Json(res);

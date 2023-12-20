@@ -26,13 +26,21 @@ namespace UserManagement.Services
         {
             try
             {
-                var last = await _context.employees.LastAsync();
-                var empID = "";
-                if(last != null)
+                var all = await _context.employees.ToListAsync();
+                var lastEmpId = "";
+                if (all.Count > 1)
                 {
-                    int.TryParse(last.EmpId.Substring(3), out int lastId);
-                    empID = (lastId +1).ToString("D3");
+                    lastEmpId = all.Last().EmpId;
                 }
+                else
+                {
+                    lastEmpId = all.FirstOrDefault().EmpId;
+                }
+                var empID = "";
+                
+                int.TryParse(lastEmpId.Substring(3), out int lastId);
+                empID = "EMP" + (lastId +1).ToString("D3");
+                
 
                 string randompassword = CreatePassword();
                 var employee = new Employees()
@@ -62,7 +70,7 @@ namespace UserManagement.Services
                 await _context.SaveChangesAsync();
 
                 //saved employee
-                var savedemp = await _context.employees.FirstOrDefaultAsync(x => x.EmpId == employeeRequest.EmpId);
+                var savedemp = await _context.employees.FirstOrDefaultAsync(x => x.EmpId == empID);
 
                 // send an email with temp pass word
                 await _emailService.SendEmailAsync(savedemp.EmpId, randompassword, savedemp.Email);
