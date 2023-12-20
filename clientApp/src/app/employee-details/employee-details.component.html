@@ -1,0 +1,65 @@
+<div class="container">
+    <div>
+        <H2>Create Employee</H2>
+    </div>
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+        <div >
+            <mat-form-field class="custom-formField-style" appearance="outline">
+                <mat-label> Fullname:</mat-label>
+                <input matInput type="text" id="Fullname" class="form-control" formControlName="Fullname">
+            </mat-form-field>
+        </div>
+
+        <div >
+            <mat-form-field class="custom-formField-style" appearance="outline">
+                <mat-label> Email:</mat-label>
+                <input matInput type="text" id="Email" class="form-control" formControlName="Email">
+            </mat-form-field>
+        </div>
+
+        <!-- <div >
+            <mat-form-field class="custom-formField-style" appearance="outline">
+                <mat-label>Salary:</mat-label>
+                <input matInput type="text" id="Salary" class="form-control" formControlName="Salary">
+            </mat-form-field>
+        </div>
+
+        <div >
+            <mat-form-field class="custom-formField-style" appearance="outline">
+                <mat-label>Joindate:</mat-label>
+                <input matInput type="text" id="Joindate" class="form-control" formControlName="Joindate">
+            </mat-form-field>
+        </div>
+
+        <div >
+            <mat-form-field class="custom-formField-style" appearance="outline">
+                <mat-label for="Username">Username:</mat-label>
+                <input matInput type="text" id="Username" class="form-control" formControlName="Username">
+            </mat-form-field>
+        </div> -->
+
+        <div >
+            <mat-form-field class="custom-formField-style" appearance="outline">
+                <mat-label for="Phonenumber">Phonenumber:</mat-label>
+                <input matInput type="text" id="Phonenumber" class="form-control" formControlName="Phonenumber">
+            </mat-form-field>
+        </div>
+
+        <div >
+            <mat-form-field class="custom-formField-style" appearance="outline">
+                <mat-label for="Address">Address:</mat-label>
+                <input matInput type="text" id="Address" class="form-control" formControlName="Address">
+            </mat-form-field>
+        </div>
+
+        <!-- <div class="form-group">
+            <label for="Status">Status:</label>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" formControlName="Status" id="Status">
+                <label class="form-check-label" for="Status">Active</label>
+            </div>
+        </div> -->
+
+        <button type="submit" class="btn btn-danger" [disabled]="!employeeForm.valid">Submit</button>
+    </form>
+</div>
