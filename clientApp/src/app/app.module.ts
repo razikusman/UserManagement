@@ -19,7 +19,9 @@ import { EmployeeLoginComponent } from './Employee/login/Employeelogin.component
 import { LoginComponent } from './Admin/login/login.component';
 import { HomePageComponent } from './Admin/home-page/home-page.component';
 import { RequestHandler } from './request-handler';
+import { MyHomePageComponent } from './Employee/my-home-page/my-home-page.component';
 import { CreateEmployeeComponent } from './Admin/create-employee/create-employee.component';
+import { MatButtonModule, MatIconButton } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { CreateEmployeeComponent } from './Admin/create-employee/create-employee
     LoginComponent,
     HomePageComponent,
     CreateEmployeeComponent,
+    MyHomePageComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,9 @@ import { CreateEmployeeComponent } from './Admin/create-employee/create-employee
     MatFormFieldModule,
     MatDatepickerModule,
     MatInputModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatButtonModule,
+    // MatIconModule
   ],
   providers: [
     {

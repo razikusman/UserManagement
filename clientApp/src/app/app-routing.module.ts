@@ -5,6 +5,7 @@ import { CreateEmployeeComponent } from './Admin/create-employee/create-employee
 import { LoginComponent } from './Admin/login/login.component';
 import { EmployeeLoginComponent } from './Employee/login/Employeelogin.component';
 import { HomePageComponent } from './Admin/home-page/home-page.component';
+import { MyHomePageComponent } from './Employee/my-home-page/my-home-page.component';
 
 const routes: Routes = [
   {path:"MyProfile", component:EmployeeDetailsComponent},
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path:"Login", component:EmployeeLoginComponent},
   {path:"Login", component:EmployeeLoginComponent},
   {path:"Home", component:HomePageComponent},
+  {path:"MyHome", component:MyHomePageComponent},
   
 ];
 
