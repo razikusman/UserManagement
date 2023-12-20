@@ -40,7 +40,7 @@ namespace UserManagement.Auth
 
         private string getEmployeeCode(string token)
         {
-            return !String.IsNullOrWhiteSpace(token) ? token.Substring(0, 3) : null;
+            return !String.IsNullOrWhiteSpace(token) ? token.Substring(0, 6) : null;
         }
     }
 }

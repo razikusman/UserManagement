@@ -21,7 +21,7 @@ namespace UserManagement.Services
             _context = userDBContext;
             _memoryCache = memoryCache;
         }
-        public async Task<Boolean> Login(LoginRequest loginRequest)
+        public async Task<string> Login(LoginRequest loginRequest)
         {
             try
             {
@@ -31,13 +31,14 @@ namespace UserManagement.Services
                 // if emp exist and status true/ active
                 if (savedemp != null && Boolean.Parse(savedemp.Status))
                 {
+                    // create token and  save in cache
                     var token = await createToken(savedemp);
                     _memoryCache.Set(savedemp.EmpId, token);
-                    return true;
+                    return token;
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
 
             }
@@ -58,6 +59,7 @@ namespace UserManagement.Services
                 }
                 else
                 {
+                    //clear the cache with employees id
                     _memoryCache.Remove(id);
                     return true;
                 }
@@ -71,6 +73,7 @@ namespace UserManagement.Services
 
         private async Task<String> createToken(Employees savedemp)
         {
+            //create token string
             var employeestring = savedemp.EmpId + savedemp.Username + savedemp.Password;
             return employeestring;
         }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UserManagement.Models.Model;
 
@@ -10,9 +11,11 @@ using UserManagement.Models.Model;
 namespace UserManagement.Migrations
 {
     [DbContext(typeof(UserDBContext))]
-    partial class UserDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231220143404_somePropertiesinEMployeeEntityMadeNullable")]
+    partial class somePropertiesinEMployeeEntityMadeNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,15 +33,18 @@ namespace UserManagement.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeesId"));
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmpId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Fullname")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Joindate")
@@ -48,6 +54,7 @@ namespace UserManagement.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phonenumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Salary")
@@ -74,10 +81,6 @@ namespace UserManagement.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalariesId"));
-
-                    b.Property<string>("EmpId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EmployeesId")
                         .HasColumnType("int");

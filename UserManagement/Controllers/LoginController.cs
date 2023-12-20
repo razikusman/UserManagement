@@ -16,17 +16,24 @@ namespace UserManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoginAsync(LoginRequest loginRequest)
+        public async Task<JsonResult> LoginAsync(LoginRequest loginRequest)
         {
             var res = await _loginService.Login(loginRequest);
-            return Ok(res);
+            return Json(res);
+        }
+
+        [HttpPost("isAdmin")]
+        public async Task<JsonResult> AdminLoginAsync(LoginRequest loginRequest, bool isAdmin)
+        {
+            var res = await _loginService.Login(loginRequest);
+            return Json(res);
         }
 
         [HttpPost("id")]
-        public async Task<IActionResult> LogOutAsync(string id)
+        public async Task<JsonResult> LogOutAsync(string id)
         {
             var res = await _loginService.LogOut(id);
-            return Ok(res);
+            return Json(res);
         }
 
         [HttpPut("id")]

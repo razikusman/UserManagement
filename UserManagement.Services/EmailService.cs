@@ -55,7 +55,7 @@ namespace UserManagement.Services
 
                 // Note: If your SMTP server requires authentication, uncomment the following lines
                 await smtpClient.AuthenticateAsync(_appSettings.EmailSetting.UserName, _appSettings.EmailSetting.Password);
-                await smtpClient.SendAsync(message);
+                await smtpClient.SendAsync(message); // send the message
                 return true;
             }
             catch (Exception e)

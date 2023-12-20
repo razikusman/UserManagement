@@ -7,6 +7,7 @@ using UserManagement.Services.Interfaces;
 using UserManagement.Models.Model.Request;
 using UserManagement.Model;
 using System.Text;
+using System.Collections.Specialized;
 
 namespace UserManagement.Services
 {
@@ -25,12 +26,20 @@ namespace UserManagement.Services
         {
             try
             {
+                var last = await _context.employees.LastAsync();
+                var empID = "";
+                if(last != null)
+                {
+                    int.TryParse(last.EmpId.Substring(3), out int lastId);
+                    empID = (lastId +1).ToString("D3");
+                }
+
                 string randompassword = CreatePassword();
                 var employee = new Employees()
                 {
                     Address = employeeRequest.Address,
                     Email = employeeRequest.Email,
-                    EmpId = employeeRequest.EmpId,
+                    EmpId = empID,
                     Fullname = employeeRequest.Fullname,
                     Joindate = employeeRequest.Joindate,
                     Password = employeeRequest.Password,
@@ -41,7 +50,7 @@ namespace UserManagement.Services
                     TempPassword = randompassword,
 
                     // add the salries to the saved employee
-                    Salaries = CreateSalaries(employeeRequest.Salaries)
+                    Salaries = CreateSalaries(employeeRequest.Salaries,empID)
                 };
 
 
@@ -55,6 +64,7 @@ namespace UserManagement.Services
                 //saved employee
                 var savedemp = await _context.employees.FirstOrDefaultAsync(x => x.EmpId == employeeRequest.EmpId);
 
+                // send an email with temp pass word
                 await _emailService.SendEmailAsync(savedemp.EmpId, randompassword, savedemp.Email);
 
                 //create response
@@ -96,7 +106,7 @@ namespace UserManagement.Services
             return stringBuilder.ToString();
         }
 
-        private List<Salaries> CreateSalaries(List<SalariesRequest> salaries)
+        private List<Salaries> CreateSalaries(List<SalariesRequest> salaries, string empId)
         {
             var SalariesList = new List<Salaries>();
             var salary = new Salaries();
@@ -105,6 +115,7 @@ namespace UserManagement.Services
             {
                 salary.SalaryAmount = item.Salary;
                 salary.Month = item.Month;
+                salary.EmpId = empId;
 
                 // add each salry to List
                 SalariesList.Add(salary);

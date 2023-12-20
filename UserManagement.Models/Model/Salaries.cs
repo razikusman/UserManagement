@@ -8,7 +8,7 @@ namespace UserManagement.Models.Model
         public int SalariesId { get; set; }
         public string Month { get; set; }
         public string SalaryAmount { get; set; }
-        public string EmpId { get;}
+        public string EmpId { get; set; }
 
         [JsonIgnore]
         public Employees Employee { get; set; }

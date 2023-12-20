@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using UserManagement.Services.Interfaces;
 using UserManagement.Services;
 using UserManagement.Auth;
+using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 AppSettings appSettings;
@@ -35,9 +36,23 @@ builder.Services.AddCors(opt =>
     opt.AddPolicy("MyCorsPolicy", builder =>
     {
         builder
-                .WithOrigins("*")
+                .WithOrigins("http://localhost:4200")
                 .AllowAnyHeader()
-                .AllowAnyMethod();
+                .AllowAnyMethod()
+                .AllowCredentials();
+
+        //builder
+        //        .WithOrigins("http://localhost:4200/")
+        //        .WithHeaders(
+        //             //HeaderNames.ContentType,
+        //             //HeaderNames.Cookie,
+        //             HeaderNames.XRequestedWith)
+        //        .WithMethods(
+        //             HttpMethods.Get,
+        //             HttpMethods.Post,
+        //             HttpMethods.Put,
+        //             HttpMethods.Delete)
+        //        .AllowCredentials();
     });
 });
 
@@ -49,10 +64,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseMiddleware<TokenMiddleware>();
 
 app.UseHttpsRedirection();
-
+app.UseCors("MyCorsPolicy");
+app.UseMiddleware<TokenMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();
