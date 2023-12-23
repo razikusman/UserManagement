@@ -6,8 +6,9 @@ namespace UserManagement.Services.Interfaces
 {
     public interface ILoginService
     {
-        Task<Employees> ChangePasswordAsync(string id, string oldPas, string newPas);
+        Task<Employees> ChangePasswordAsync(string username, string oldPas, string newPas);
         Task<string> Login(LoginRequest loginRequest);
         Task<Boolean> LogOut(string id);
+        Task<APIResponseModel<Employees>> GetSession();
     }
 }

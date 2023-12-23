@@ -34,6 +34,7 @@ namespace UserManagement.Services
                     // create token and  save in cache
                     var token = await createToken(savedemp);
                     _memoryCache.Set(savedemp.EmpId, token);
+                    _memoryCache.Set("logedinEmployee", savedemp);
                     return token;
                 }
                 else
@@ -61,6 +62,8 @@ namespace UserManagement.Services
                 {
                     //clear the cache with employees id
                     _memoryCache.Remove(id);
+                    _memoryCache.Remove("logedinEmployee"); // cleare employee data
+
                     return true;
                 }
             }
@@ -78,12 +81,12 @@ namespace UserManagement.Services
             return employeestring;
         }
 
-        public async Task<Employees> ChangePasswordAsync(string id, string oldPas, string newPas)
+        public async Task<Employees> ChangePasswordAsync(string username, string oldPas, string newPas)
         {
             try
             {
                 //get the matching employee with id and temp password
-                var emp = await _context.employees.FirstOrDefaultAsync(e => e.TempPassword == oldPas && e.EmpId == id);
+                var emp = await _context.employees.FirstOrDefaultAsync(e => e.TempPassword == oldPas && e.Username == username);
 
                 // if emp is not null
                 if (emp != null)
@@ -92,6 +95,10 @@ namespace UserManagement.Services
                     emp.Password = newPas;
                     _context.employees.Entry(emp).State = EntityState.Modified;
                     var res = await _context.SaveChangesAsync();
+
+                    var token = await createToken(emp);
+                    _memoryCache.Set(emp.EmpId, token);
+                    _memoryCache.Set("logedinEmployee", emp);
 
                     //if save is success
                     if (res > 0)
@@ -111,6 +118,24 @@ namespace UserManagement.Services
             {
 
                 throw;
+            }
+        }
+
+        public async Task<APIResponseModel<Employees>> GetSession()
+        {
+            var responseModel = new APIResponseModel<Employees>();
+            var emp = _memoryCache.Get("logedinEmployee") as Employees;
+            if(emp != null)
+            {
+                responseModel.Data = emp;
+                return responseModel;
+            }
+            else
+            {
+                responseModel.IsError = true;
+                responseModel.ErrorMessage = "Un Authorized - Session Expired";
+                responseModel.ResponseCode = (int)HttpStatusCode.Unauthorized;
+                return responseModel;
             }
         }
 

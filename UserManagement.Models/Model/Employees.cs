@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using UserManagement.Models.Model.Request;
 
 namespace UserManagement.Models.Model
 {
@@ -18,5 +19,6 @@ namespace UserManagement.Models.Model
         public string? Status { get; set; } //-  active/inactive
         public string? TempPassword { get; set; }
         public List<Salaries> Salaries { get; set; }
+
     }
 }

@@ -17,6 +17,6 @@ namespace UserManagement.Models.Model.Request
         public string? TempPassword { get; set; }
 
 
-        public List<SalariesRequest> Salaries { get; set; }
+        public List<SalariesRequest>? Salaries { get; set; }
     }
 }

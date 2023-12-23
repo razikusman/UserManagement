@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UserManagement.Models.Model;
 using UserManagement.Models.Model.Request;
 using UserManagement.Services.Interfaces;
 
@@ -36,10 +37,17 @@ namespace UserManagement.Controllers
             return Json(res);
         }
 
-        [HttpPut("id")]
-        public async Task<JsonResult> ChangePasswordAsync(string id, string oldPas, string newPas)
+        [HttpPut("username")]
+        public async Task<JsonResult> ChangePasswordAsync(string username, string oldPas, string newPas)
         {
-            var res = await _loginService.ChangePasswordAsync(id, oldPas, newPas);
+            var res = await _loginService.ChangePasswordAsync(username, oldPas, newPas);
+            return Json(res);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetSession()
+        {
+            var res = await _loginService.GetSession();
             return Json(res);
         }
     }

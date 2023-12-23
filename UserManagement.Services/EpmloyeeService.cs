@@ -8,6 +8,8 @@ using UserManagement.Models.Model.Request;
 using UserManagement.Model;
 using System.Text;
 using System.Collections.Specialized;
+using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace UserManagement.Services
 {
@@ -15,65 +17,87 @@ namespace UserManagement.Services
     {
         private readonly UserDBContext _context;
         private readonly IEmailService _emailService;
+        private readonly IMemoryCache _memoryCache;
 
         public EpmloyeeService(UserDBContext userDBContext,
-                               IEmailService emailService) 
+                               IEmailService emailService,
+                               IMemoryCache memoryCache) 
         {
             _context = userDBContext;
             _emailService = emailService;
+            _memoryCache = memoryCache;
         }
         public async Task<APIResponseModel<Employees>> CreateEmployeeAsync(EmployeeRequest employeeRequest)
         {
             try
             {
-                var all = await _context.employees.ToListAsync();
-                var lastEmpId = "";
-                if (all.Count > 1)
+                var savedemp = new Employees();
+
+                if (employeeRequest.EmpId == "-1")
                 {
-                    lastEmpId = all.Last().EmpId;
+                    var all = await _context.employees.ToListAsync();
+                    var lastEmpId = "";
+                    if (all.Count > 1)
+                    {
+                        lastEmpId = all.Last().EmpId;
+                    }
+                    else
+                    {
+                        lastEmpId = all.FirstOrDefault().EmpId;
+                    }
+                    var empID = "";
+
+                    int.TryParse(lastEmpId.Substring(3), out int lastId);
+                    empID = "EMP" + (lastId + 1).ToString("D3");
+
+
+                    string randompassword = CreatePassword();
+                    var employee = new Employees()
+                    {
+                        Address = employeeRequest.Address,
+                        Email = employeeRequest.Email,
+                        EmpId = empID,
+                        Fullname = employeeRequest.Fullname,
+                        Joindate = employeeRequest.Joindate,
+                        Password = employeeRequest.Password,
+                        Phonenumber = employeeRequest.Phonenumber,
+                        Salary = employeeRequest.Salary,
+                        Status = employeeRequest.Status,
+                        Username = employeeRequest.Username,
+                        TempPassword = randompassword,
+
+                        // add the salries to the saved employee
+                        Salaries = CreateSalaries(employeeRequest.Salaries, empID)
+                    };
+
+                    //create data
+                    _context.employees.Add(employee);
+
+
+                    //saved employee
+                    savedemp = await _context.employees.FirstOrDefaultAsync(x => x.EmpId == empID);
+
+                    // send an email with temp pass word
+                    await _emailService.SendEmailAsync(savedemp.EmpId, randompassword, savedemp.Email);
+
                 }
+
                 else
                 {
-                    lastEmpId = all.FirstOrDefault().EmpId;
+                    savedemp = await _context.employees.FirstOrDefaultAsync(e => e.EmpId == employeeRequest.EmpId);
+
+                    var config = new MapperConfiguration(cfg => cfg.CreateMap<EmployeeRequest, Employees>());
+                    var mapper = config.CreateMapper();
+
+                    mapper.Map(employeeRequest, savedemp);
+
+                    _context.Entry(savedemp).State = EntityState.Modified;
+
+                    _memoryCache.Set("logedinEmployee", savedemp);
                 }
-                var empID = "";
-                
-                int.TryParse(lastEmpId.Substring(3), out int lastId);
-                empID = "EMP" + (lastId +1).ToString("D3");
-                
-
-                string randompassword = CreatePassword();
-                var employee = new Employees()
-                {
-                    Address = employeeRequest.Address,
-                    Email = employeeRequest.Email,
-                    EmpId = empID,
-                    Fullname = employeeRequest.Fullname,
-                    Joindate = employeeRequest.Joindate,
-                    Password = employeeRequest.Password,
-                    Phonenumber = employeeRequest.Phonenumber,
-                    Salary = employeeRequest.Salary,
-                    Status = employeeRequest.Status,
-                    Username = employeeRequest.Username,
-                    TempPassword = randompassword,
-
-                    // add the salries to the saved employee
-                    Salaries = CreateSalaries(employeeRequest.Salaries,empID)
-                };
-
-
-                
-                //create data
-                _context.employees.Add(employee);
 
                 //create entry in db
                 await _context.SaveChangesAsync();
-
-                //saved employee
-                var savedemp = await _context.employees.FirstOrDefaultAsync(x => x.EmpId == empID);
-
-                // send an email with temp pass word
-                await _emailService.SendEmailAsync(savedemp.EmpId, randompassword, savedemp.Email);
 
                 //create response
                 var response = new APIResponseModel<Employees>() 
