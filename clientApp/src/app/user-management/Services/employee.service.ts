@@ -11,11 +11,11 @@ export class EmployeeService {
   
   constructor(private http: HttpClient) { }
 
-  SaveEmployee(emp: Employees): Observable<any> {
-    return this.http.post(this.baseUrl, emp);
+  SaveEmployee(emp: Employees) {
+    return this.http.post(this.baseUrl, emp, {observe:'response'});
   }
 
-  GetEmployee(): Observable<any> {
-    return this.http.get(this.baseUrl);
+  GetEmployee() {
+    return this.http.get(this.baseUrl, {observe:'response'});
   }
 }

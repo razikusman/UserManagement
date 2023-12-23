@@ -1,0 +1,32 @@
+<!-- employee-list.component.html -->
+
+<div class="container">
+    <div class="container mt-4">
+        <h2>Employee List</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let employee of employees">
+                    <td>{{ employee.empId }}</td>
+                    <td>{{ employee.fullname }}</td>
+                    <td>{{ employee.email }}</td>
+                    <td>{{ employee.status ? 'Active' : 'Inactive' }}</td>
+                    <td>
+                        <mat-checkbox [(ngModel)]="employee.status" (change)="onCheckboxChange($event, employee)">
+                            {{ employee.status ? 'Active' : 'Inactive' }}
+                        </mat-checkbox>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

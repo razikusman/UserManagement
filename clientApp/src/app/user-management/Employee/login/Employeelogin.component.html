@@ -1,0 +1,28 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h4>Login</h4>
+          </div>
+          <div class="card-body">
+            <!-- Angular Material Form -->
+            <form class="mat-typography" [formGroup]="LoginForm" (ngSubmit)="onSubmit()">
+              <mat-form-field class="w-100">
+                <input matInput placeholder="Username" name="username"  formControlName="username" required>
+              </mat-form-field>
+  
+              <mat-form-field class="w-100">
+                <input matInput type="password" placeholder="Password" name="password" formControlName="password" required>
+              </mat-form-field>
+  
+              <button mat-raised-button color="primary" class="w-100 mt-3" [disabled]="!LoginForm.valid">Login</button>
+            </form>
+
+            <button mat-raised-button  class="w-100 mt-3" (click)="changepass()">New User Change Password</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

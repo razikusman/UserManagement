@@ -2,8 +2,8 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Employees, Salaries } from 'src/app/Models/employees';
-import { EmployeeService } from 'src/app/Services/employee.service';
+import { Employees, Salaries } from 'src/app/user-management/Models/employees';
+import { EmployeeService } from 'src/app/user-management/Services/employee.service';
 
 @Component({
   selector: 'app-create-employee',
@@ -50,6 +50,7 @@ export class CreateEmployeeComponent implements OnInit {
       employee.Username = emp.Username;
       employee.Email = emp.Email;
       employee.Status = 'true';
+      employee.EmpId = "-1";
       //create salry of current month start
       let sal = new Salaries();
       let date = new Date();

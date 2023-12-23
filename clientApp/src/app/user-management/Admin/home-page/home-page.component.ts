@@ -1,6 +1,6 @@
 import { Component,OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { EmployeeService } from 'src/app/Services/employee.service';
+import { EmployeeService } from 'src/app/user-management/Services/employee.service';
 
 @Component({
   selector: 'app-home-page',
@@ -20,8 +20,12 @@ export class HomePageComponent implements OnInit {
     // })
   }
 
-  goToEmployeesPage(){
+  goToAddEmployeesPage(){
     this.router.navigate(["/createEmployee"])
+  }
+
+  goToEmployeesPage(){
+    this.router.navigate(["/myEmployees"])
   }
 
 }

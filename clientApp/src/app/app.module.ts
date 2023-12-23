@@ -13,26 +13,11 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
-import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
-import { UserManagementComponent } from './user-management/user-management.component';
-import { EmployeeLoginComponent } from './Employee/login/Employeelogin.component';
-import { LoginComponent } from './Admin/login/login.component';
-import { HomePageComponent } from './Admin/home-page/home-page.component';
-import { RequestHandler } from './request-handler';
-import { MyHomePageComponent } from './Employee/my-home-page/my-home-page.component';
-import { CreateEmployeeComponent } from './Admin/create-employee/create-employee.component';
 import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    EmployeeDetailsComponent,
-    UserManagementComponent,
-    EmployeeLoginComponent,
-    LoginComponent,
-    HomePageComponent,
-    CreateEmployeeComponent,
-    MyHomePageComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -46,16 +31,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
-    MatButtonModule,
+    MatButtonModule
     // MatIconModule
   ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: RequestHandler,
-      multi: true,
-    },
-  ],
-  bootstrap: [UserManagementComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

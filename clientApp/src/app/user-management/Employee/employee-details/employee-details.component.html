@@ -1,21 +1,28 @@
 <div class="container">
     <div>
-        <H2>Create Employee</H2>
+        <H1>My Details</H1>
+    </div>
+
+    <div>
+        <h2>
+            My Email : {{email}}
+        </h2>
     </div>
     <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+        
         <div >
             <mat-form-field class="custom-formField-style" appearance="outline">
-                <mat-label> Fullname:</mat-label>
+                <mat-label for="Fullname">Full Name:</mat-label>
                 <input matInput type="text" id="Fullname" class="form-control" formControlName="Fullname">
             </mat-form-field>
         </div>
 
-        <div >
+        <!-- <div >
             <mat-form-field class="custom-formField-style" appearance="outline">
                 <mat-label> Email:</mat-label>
                 <input matInput type="text" id="Email" class="form-control" formControlName="Email">
             </mat-form-field>
-        </div>
+        </div> -->
 
         <!-- <div >
             <mat-form-field class="custom-formField-style" appearance="outline">
@@ -59,7 +66,7 @@
                 <label class="form-check-label" for="Status">Active</label>
             </div>
         </div> -->
-
-        <button type="submit" class="btn btn-danger" [disabled]="!employeeForm.valid">Submit</button>
+        {{employeeForm.valid}}
+        <button type="submit" class="btn btn-danger" >Submit</button>
     </form>
 </div>

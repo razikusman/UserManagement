@@ -1,22 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
-import { CreateEmployeeComponent } from './Admin/create-employee/create-employee.component';
-import { LoginComponent } from './Admin/login/login.component';
-import { EmployeeLoginComponent } from './Employee/login/Employeelogin.component';
-import { HomePageComponent } from './Admin/home-page/home-page.component';
-import { MyHomePageComponent } from './Employee/my-home-page/my-home-page.component';
 
-const routes: Routes = [
-  {path:"MyProfile", component:EmployeeDetailsComponent},
-  {path:"createEmployee", component:CreateEmployeeComponent},
-  {path:"AdminLogin", component:LoginComponent},
-  {path:"Login", component:EmployeeLoginComponent},
-  {path:"Login", component:EmployeeLoginComponent},
-  {path:"Home", component:HomePageComponent},
-  {path:"MyHome", component:MyHomePageComponent},
-  
-];
+const routes: Routes = [];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
