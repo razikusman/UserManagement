@@ -18,7 +18,7 @@
 /UserManagement.Auth/obj
 /UserManagement.Auth/Properties
 /UserManagement.Auth/wwwroot
-*.json
+
 /UserManagement/.vs/ProjectEvaluation/usermanagement.metadata.v6.1
 /UserManagement/.vs/ProjectEvaluation/usermanagement.projects.v6.1
 /UserManagement.Services/obj/Debug/net6.0/UserManagement.Services.csproj.FileListAbsolute.txt
